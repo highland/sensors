@@ -60,10 +60,10 @@ class DHT11:
             message_bytes[byte_number] = (message_bytes[byte_number] << 1) + bit
         # finished reading all 40 bits of the message
 
-        humidity, humidity_dec, temperature, temperature_dec, check_sum = message_bytes
+        humidity, _, temperature, _, check_sum = message_bytes
 
-        if (humidity + humidity_dec + temperature + temperature_dec) % 256 == check_sum:  # confirmed
-            return (humidity + humidity_dec / 256), (temperature + temperature_dec / 256)
+        if (humidity + temperature) % 256 == check_sum:  # confirmed
+            return humidity, temperature
         else:
             return 0.0, 0.0
 
