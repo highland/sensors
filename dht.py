@@ -4,7 +4,7 @@ using the Raspberry Pi
 
 12/10/2017
 """
-import RPi.GPIO as GPIO
+import RPIO as GPIO
 import time
 from abc import ABCMeta, abstractmethod
 

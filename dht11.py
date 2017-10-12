@@ -5,6 +5,7 @@ using the Raspberry Pi
 10/10/2017
 """
 from dht import DHT
+import RPIO as GPIO
 
 
 class DHT11(DHT):
