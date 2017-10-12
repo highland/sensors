@@ -25,6 +25,10 @@ class DHT(metaclass=ABCMeta):
         """
         Takes a measurement from the sensor.
         Repeat if unsuccessful <retries> times.
+        This is a Template Method which reads the message
+        from the device, and then delagates to
+        subclasses which must provide specific
+        beahviour for the _decode_message() method.
 
         Returns:
             Relative Humidity: float,
@@ -59,7 +63,7 @@ class DHT(metaclass=ABCMeta):
                     low_sample_count += 1
 
                 # count the high samples
-                high_sample_count = 1
+                high_sample_count = 1   # starting at 1 as the first high reading terminated the low loop
                 while GPIO.input(self._pin) == 1:
                     high_sample_count += 1
 
