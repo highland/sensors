@@ -7,7 +7,7 @@ using the Raspberry Pi
 import RPIO as GPIO
 import time
 from abc import ABCMeta, abstractmethod
-
+from dht_typing import Message, Data
 
 class DHT(metaclass=ABCMeta):
     """
@@ -15,20 +15,20 @@ class DHT(metaclass=ABCMeta):
     connected to a specified GPIO pin
     """
 
-    def __init__(self, pin=4, mode=GPIO.BCM):
+    def __init__(self, pin: int = 4, mode=GPIO.BCM) -> None:
         self._pin = pin
         GPIO.setmode(mode)
         GPIO.setup(pin, GPIO.OUT, initial=GPIO.HIGH)
         time.sleep(0.025)
 
-    def take_measurement(self, retries=5):
+    def take_measurement(self, retries: 'int > 0' = 5) -> Data:
         """
         Takes a measurement from the sensor.
         Repeat if unsuccessful <retries> times.
         This is a Template Method which reads the message
-        from the device, and then delagates to
+        from the device, and then delegates to
         subclasses which must provide specific
-        beahviour for the _decode_message() method.
+        behaviour for the _decode_message() method.
 
         Returns:
             Relative Humidity: float,
@@ -63,7 +63,7 @@ class DHT(metaclass=ABCMeta):
                     low_sample_count += 1
 
                 # count the high samples
-                high_sample_count = 1   # starting at 1 as the first high reading terminated the low loop
+                high_sample_count = 1  # starting at 1 as the first high reading terminated the low loop
                 while GPIO.input(self._pin) == 1:
                     high_sample_count += 1
 
@@ -80,5 +80,5 @@ class DHT(metaclass=ABCMeta):
 
     @staticmethod
     @abstractmethod
-    def _decode_message(message_bytes):
+    def _decode_message(message_bytes: Message) -> Data:
         pass

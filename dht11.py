@@ -6,6 +6,7 @@ using the Raspberry Pi
 """
 from dht import DHT
 import RPIO as GPIO
+from dht_typing import Message, Data
 
 
 class DHT11(DHT):
@@ -14,11 +15,11 @@ class DHT11(DHT):
     connected to a specified GPIO pin
     """
 
-    def __init__(self, pin=4, mode=GPIO.BCM):
+    def __init__(self, pin: int = 4, mode=GPIO.BCM) -> None:
         super().__init__(pin, mode)
 
     @staticmethod
-    def _decode_message(message_bytes):
+    def _decode_message(message_bytes: Message) -> Data:
         humidity, _, temperature, _, check_sum = message_bytes
         if (humidity + temperature) % 256 == check_sum:  # confirmed
             return float(humidity), float(temperature)
